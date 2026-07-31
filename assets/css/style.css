@@ -333,3 +333,117 @@ body {
   inset: 0;
   z-index: 99;
 }
+
+/* ── Dashboard tiles ── */
+.dash-tiles {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.dash-tile {
+  background: #d4d0c8;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
+  padding: 12px 18px;
+  min-width: 120px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dash-tile-icon  { font-size: 22px; }
+.dash-tile-count { font-size: 22px; font-weight: bold; color: #0a246a; }
+.dash-tile-label { font-size: 11px; }
+
+/* ── Generic page mdi-window fills workspace ── */
+.workspace > .mdi-window {
+  position: static;
+  width: auto;
+  margin: 16px;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.35);
+}
+
+/* ── Data table (used in list pages) ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.data-table th {
+  background: #0a246a;
+  color: #fff;
+  padding: 4px 8px;
+  text-align: left;
+  font-weight: normal;
+  border-right: 1px solid #4060a0;
+}
+
+.data-table td {
+  padding: 3px 8px;
+  border-bottom: 1px solid #c0bdb5;
+  border-right: 1px solid #c0bdb5;
+}
+
+.data-table tr:nth-child(even) td { background: #e8e6e0; }
+.data-table tr:hover td { background: #b8d4ff; }
+
+/* ── Form styling ── */
+.vb-form {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 6px 10px;
+  align-items: center;
+  max-width: 480px;
+}
+
+.vb-form label { text-align: right; }
+
+.vb-form input[type="text"],
+.vb-form input[type="number"],
+.vb-form input[type="date"],
+.vb-form select,
+.vb-form textarea {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 2px 4px;
+  background: #fff;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  width: 100%;
+}
+
+.vb-form textarea { grid-column: 2; resize: vertical; min-height: 60px; }
+
+.form-actions {
+  grid-column: 2;
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* ── Alert / message ── */
+.msg-success {
+  background: #d0f0d0;
+  border: 1px solid #008000;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+  color: #005000;
+}
+
+.msg-error {
+  background: #ffd0d0;
+  border: 1px solid #cc0000;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+  color: #880000;
+}
