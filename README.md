@@ -1,6 +1,6 @@
 # Stationery Management System
 
-A **PHP + MySQL** web application for managing stationery inventory, built with a classic **VB6 / Windows 98** look-and-feel.
+A **PHP + Microsoft SQL Server** web application for managing stationery inventory, built with a classic **VB6 / Windows 98** look-and-feel. Designed to run on a LAN or via static IP.
 
 ---
 
@@ -10,7 +10,7 @@ A **PHP + MySQL** web application for managing stationery inventory, built with 
 StationeryManagement/
 ├── index.php               ← Dashboard (homepage)
 ├── config/
-│   └── db.php              ← PDO database connection
+│   └── db.php              ← PDO_SQLSRV database connection
 ├── includes/
 │   ├── header.php          ← Title bar + VB menu + toolbar
 │   └── footer.php          ← Status bar + scripts
@@ -42,28 +42,64 @@ StationeryManagement/
 
 | Requirement | Version |
 |---|---|
-| PHP | 7.4 or higher |
-| MySQL / MariaDB | 5.7 / 10.3 or higher |
-| Web server | Apache (XAMPP / WAMP) or PHP built-in server |
+| PHP | 7.4 or higher (8.x recommended) |
+| Microsoft SQL Server | 2016 or higher (Express edition is fine) |
+| PHP Driver | [Microsoft Drivers for PHP for SQL Server](https://learn.microsoft.com/en-us/sql/connect/php/download-drivers-php-sql-server) (`php_pdo_sqlsrv_xx_ts.dll`) |
+| Web server | IIS with PHP, or Apache/XAMPP on Windows |
+| ODBC Driver | [ODBC Driver 17 or 18 for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server) |
 
 ---
 
-## Setup (Windows — XAMPP / WAMP)
+## Setup (Windows)
 
-1. Copy this folder to `E:\StationeryManagement` (or your `htdocs` / `www` folder).
-2. Open `config/db.php` and update:
-   ```php
-   define('DB_HOST', 'localhost');
-   define('DB_NAME', 'stationery_db');
-   define('DB_USER', 'root');
-   define('DB_PASS', '');
+### 1 — Install the PHP SQL Server driver
+
+1. Download the correct `php_pdo_sqlsrv_xx_ts.dll` for your PHP version from the link above.
+2. Copy the `.dll` file to your PHP `ext/` folder (e.g. `C:\xampp\php\ext\`).
+3. Add to `php.ini`:
+   ```ini
+   extension=php_pdo_sqlsrv_xx_ts.dll
    ```
-3. Create the database in phpMyAdmin (or MySQL CLI):
-   ```sql
-   CREATE DATABASE stationery_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-4. Table SQL scripts will be added here as each module is built.
-5. Open your browser: `http://localhost/StationeryManagement/`
+4. Also install **ODBC Driver 17 or 18 for SQL Server** on the web-server machine.
+5. Restart Apache / IIS.
+6. Verify: `php -m | findstr sqlsrv` should show `pdo_sqlsrv`.
+
+### 2 — Create the database
+
+In SQL Server Management Studio (SSMS) or `sqlcmd`:
+```sql
+CREATE DATABASE StationeryDB;
+GO
+```
+
+### 3 — Configure the connection
+
+Open `config/db.php` and set:
+```php
+define('DB_HOST',     'localhost');       // or '192.168.1.10' for LAN/static IP
+define('DB_PORT',     '1433');            // default SQL Server port
+define('DB_NAME',     'StationeryDB');
+define('DB_WIN_AUTH', false);             // true = Windows Auth (no user/pass needed)
+define('DB_USER',     'sa');              // SQL Server login
+define('DB_PASS',     'YourPassword');
+```
+
+**LAN / Static IP access** — set `DB_HOST` to the server's IP address, e.g.:
+```php
+define('DB_HOST', '192.168.1.10');
+// Named instance: '192.168.1.10\\SQLEXPRESS'
+```
+Make sure TCP/IP is enabled in **SQL Server Configuration Manager** and port **1433** is open in Windows Firewall.
+
+### 4 — Deploy the app
+
+Copy this folder to `E:\StationeryManagement` (or your web server's document root) and open:
+```
+http://localhost/StationeryManagement/
+http://192.168.1.10/StationeryManagement/   ← from other LAN machines
+```
+
+Table SQL scripts will be added here as each module is built.
 
 ---
 
